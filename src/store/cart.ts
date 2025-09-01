@@ -16,6 +16,7 @@ interface CartState {
   items: CartItem[];
   loading: boolean;
   error: string | null;
+  isHydrated: boolean;
   addItem: (product: Product, quantity?: number, size?: string, color?: string) => void;
   removeItem: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
@@ -25,6 +26,7 @@ interface CartState {
   selectAll: (selected: boolean) => void;
   removeSelected: () => void;
   syncWithServer: () => Promise<void>;
+  setHydrated: () => void;
   totalItems: number;
   totalPrice: number;
   selectedItems: CartItem[];
@@ -37,6 +39,7 @@ export const useCartStore = create<CartState>()(
       items: [],
       loading: false,
       error: null,
+      isHydrated: false,
       
       addItem: (product, quantity = 1, size, color) => {
         const { items } = get();
@@ -150,6 +153,10 @@ export const useCartStore = create<CartState>()(
         } finally {
           set({ loading: false });
         }
+      },
+      
+      setHydrated: () => {
+        set({ isHydrated: true });
       },
       
       get totalItems() {

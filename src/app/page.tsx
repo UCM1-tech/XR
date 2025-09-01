@@ -1,7 +1,10 @@
 import Link from 'next/link';
 import Image from 'next/image';
+import { getLocaleFromCookies, getMessagesForLocale } from '@/i18n/server';
 
 export default function HomePage() {
+  const locale = getLocaleFromCookies();
+  const messages = getMessagesForLocale(locale);
   return (
     <div>
       {/* 主视觉 Banner */}
@@ -20,7 +23,7 @@ export default function HomePage() {
             fontWeight: 'bold',
             textShadow: '2px 2px 4px rgba(0,0,0,0.3)'
           }}>
-            XR 智能试衣间
+            {messages.home.heroTitle}
           </h1>
           <p style={{ 
             fontSize: '1.5rem', 
@@ -30,7 +33,7 @@ export default function HomePage() {
             marginLeft: 'auto',
             marginRight: 'auto'
           }}>
-            革命性的购物体验，让您在家中就能体验专业试衣间的效果
+            {messages.home.heroSubtitle}
           </p>
           <div style={{ display: 'flex', gap: '20px', justifyContent: 'center', flexWrap: 'wrap' }}>
             <Link href="/products">
@@ -46,7 +49,7 @@ export default function HomePage() {
                 boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
                 transition: 'transform 0.2s'
               }}>
-                立即体验
+                {messages.home.ctaTryNow}
               </button>
             </Link>
             <Link href="/products">
@@ -61,7 +64,7 @@ export default function HomePage() {
                 fontWeight: 'bold',
                 transition: 'all 0.2s'
               }}>
-                了解更多
+                {messages.home.ctaLearnMore}
               </button>
             </Link>
           </div>
@@ -77,7 +80,7 @@ export default function HomePage() {
             marginBottom: '60px',
             color: '#333'
           }}>
-            为什么选择 XR 试衣间？
+            {messages.home.whyChooseTitle}
           </h2>
           
           <div style={{ 
@@ -103,10 +106,10 @@ export default function HomePage() {
                 🎮
               </div>
               <h3 style={{ fontSize: '1.5rem', marginBottom: '15px', color: '#333' }}>
-                3D 立体预览
+                {messages.home.feature3dTitle}
               </h3>
               <p style={{ color: '#666', lineHeight: '1.6' }}>
-                360度旋转查看商品细节，真实还原商品外观和质感
+                {messages.home.feature3dDesc}
               </p>
             </div>
             
@@ -128,10 +131,10 @@ export default function HomePage() {
                 👁️
               </div>
               <h3 style={{ fontSize: '1.5rem', marginBottom: '15px', color: '#333' }}>
-                AR 虚拟试穿
+                {messages.home.featureArTitle}
               </h3>
               <p style={{ color: '#666', lineHeight: '1.6' }}>
-                通过摄像头实时试穿，在真实环境中预览效果
+                {messages.home.featureArDesc}
               </p>
             </div>
             
@@ -153,10 +156,10 @@ export default function HomePage() {
                 📱
               </div>
               <h3 style={{ fontSize: '1.5rem', marginBottom: '15px', color: '#333' }}>
-                随时随地
+                {messages.home.featureAnywhereTitle}
               </h3>
               <p style={{ color: '#666', lineHeight: '1.6' }}>
-                无需出门，在家就能享受专业试衣体验
+                {messages.home.featureAnywhereDesc}
               </p>
             </div>
           </div>
@@ -172,7 +175,7 @@ export default function HomePage() {
             marginBottom: '60px',
             color: '#333'
           }}>
-            热门商品推荐
+            {messages.home.popularTitle}
           </h2>
           
           <div style={{ 
@@ -212,7 +215,7 @@ export default function HomePage() {
                       borderRadius: '20px',
                       cursor: 'pointer'
                     }}>
-                      立即试穿
+                      {messages.home.ctaTryNow}
                     </button>
                   </Link>
                 </div>
@@ -251,7 +254,7 @@ export default function HomePage() {
                       borderRadius: '20px',
                       cursor: 'pointer'
                     }}>
-                      立即试穿
+                      {messages.home.ctaTryNow}
                     </button>
                   </Link>
                 </div>
@@ -290,7 +293,7 @@ export default function HomePage() {
                       borderRadius: '20px',
                       cursor: 'pointer'
                     }}>
-                      立即试穿
+                      {messages.home.ctaTryNow}
                     </button>
                   </Link>
                 </div>
@@ -310,7 +313,7 @@ export default function HomePage() {
                 cursor: 'pointer',
                 fontWeight: 'bold'
               }}>
-                查看更多商品
+                {messages.home.viewMore}
               </button>
             </Link>
           </div>
@@ -332,14 +335,13 @@ export default function HomePage() {
             marginBottom: '30px'
           }}>
             <div>
-              <h3 style={{ marginBottom: '15px' }}>关于我们</h3>
+              <h3 style={{ marginBottom: '15px' }}>{messages.home.footerAbout}</h3>
               <p style={{ color: '#ccc', lineHeight: '1.6' }}>
-                XR 智能试衣间致力于为用户提供革命性的购物体验，
-                通过先进的 AR/VR 技术，让购物变得更加便捷和有趣。
+                XR
               </p>
             </div>
             <div>
-              <h3 style={{ marginBottom: '15px' }}>联系方式</h3>
+              <h3 style={{ marginBottom: '15px' }}>{messages.home.footerContact}</h3>
               <p style={{ color: '#ccc', lineHeight: '1.6' }}>
                 邮箱：contact@xr-shopping.com<br />
                 电话：400-123-4567<br />
@@ -347,17 +349,17 @@ export default function HomePage() {
               </p>
             </div>
             <div>
-              <h3 style={{ marginBottom: '15px' }}>快速链接</h3>
+              <h3 style={{ marginBottom: '15px' }}>{messages.home.footerLinks}</h3>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-                <Link href="/products" style={{ color: '#ccc', textDecoration: 'none' }}>商品浏览</Link>
-                <Link href="/login" style={{ color: '#ccc', textDecoration: 'none' }}>用户登录</Link>
-                <Link href="/register" style={{ color: '#ccc', textDecoration: 'none' }}>用户注册</Link>
-                <Link href="/cart" style={{ color: '#ccc', textDecoration: 'none' }}>购物车</Link>
+                <Link href="/products" style={{ color: '#ccc', textDecoration: 'none' }}>{messages.home.quickBrowse}</Link>
+                <Link href="/login" style={{ color: '#ccc', textDecoration: 'none' }}>{messages.home.quickLogin}</Link>
+                <Link href="/register" style={{ color: '#ccc', textDecoration: 'none' }}>{messages.home.quickRegister}</Link>
+                <Link href="/cart" style={{ color: '#ccc', textDecoration: 'none' }}>{messages.home.quickCart}</Link>
               </div>
             </div>
           </div>
           <div style={{ borderTop: '1px solid #555', paddingTop: '20px', color: '#ccc' }}>
-            © 2024 XR 智能试衣间. 保留所有权利.
+            {messages.home.footerCopyright}
           </div>
         </div>
       </footer>

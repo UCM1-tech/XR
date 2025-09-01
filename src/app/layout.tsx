@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navigation from '@/components/Navigation';
+import { I18nProvider } from '@/i18n/I18nProvider';
+import { getLocaleFromCookies, getMessagesForLocale } from '@/i18n/server';
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -12,11 +14,15 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
+  const locale = getLocaleFromCookies();
+  const messages = getMessagesForLocale(locale);
   return (
-    <html lang="zh-CN">
+    <html lang={locale}>
       <body>
-        <Navigation />
-        <main>{children}</main>
+        <I18nProvider locale={locale} messages={messages}>
+          <Navigation />
+          <main>{children}</main>
+        </I18nProvider>
       </body>
     </html>
   );

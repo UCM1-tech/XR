@@ -28,7 +28,7 @@ interface AuthState {
 }
 
 export const useAuthStore = create<AuthState>((set, get) => ({
-  token: typeof window !== 'undefined' ? window.localStorage.getItem('auth_token') : null,
+  token: null, // Initialize as null to prevent hydration mismatch
   user: null,
   loading: false,
   error: null,
@@ -142,13 +142,19 @@ export const useAuthStore = create<AuthState>((set, get) => ({
   }
 }));
 
-// 初始化时检查token并获取用户信息
-if (typeof window !== 'undefined') {
-  const token = window.localStorage.getItem('auth_token');
-  if (token) {
-    useAuthStore.getState().refreshUser();
-  } else {
-    useAuthStore.setState({ isInitialized: true });
+// 添加一个初始化函数，在客户端调用
+export const initializeAuth = () => {
+  if (typeof window !== 'undefined') {
+    const token = window.localStorage.getItem('auth_token');
+    const store = useAuthStore.getState();
+    
+    if (token) {
+      // 设置 token 并刷新用户信息
+      useAuthStore.setState({ token });
+      store.refreshUser();
+    } else {
+      useAuthStore.setState({ isInitialized: true });
+    }
   }
-}
+};
 

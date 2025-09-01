@@ -5,6 +5,7 @@ const mockUsers = [
       _id: '1',
       username: 'testuser',
       email: 'test@example.com',
+      password: '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
       phone: '13800138000',
       avatar: '',
       bio: '热爱时尚的购物达人',
@@ -29,6 +30,7 @@ const mockUsers = [
       _id: '2',
       username: 'fashionlover',
       email: 'fashion@example.com',
+      password: '$2a$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
       phone: '13900139000',
       avatar: '',
       bio: '专业时尚博主，分享最新潮流资讯',

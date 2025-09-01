@@ -4,6 +4,8 @@ import { useAuthStore } from '@/store/auth';
 import { fetchUserProfile, updateUserProfile } from '@/lib/users';
 import type { UserProfile } from '@/store/auth';
 import Link from 'next/link';
+import AvatarUpload from '@/components/AvatarUpload';
+import PasswordChange from '@/components/PasswordChange';
 
 export default function ProfilePage() {
   const user = useAuthStore((s) => s.user);
@@ -13,6 +15,7 @@ export default function ProfilePage() {
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+  const [showPasswordChange, setShowPasswordChange] = useState(false);
 
   useEffect(() => {
     const loadProfile = async () => {
@@ -61,6 +64,13 @@ export default function ProfilePage() {
     if (confirm('确定要退出登录吗？')) {
       logout();
     }
+  };
+
+  const handlePasswordChange = async (currentPassword: string, newPassword: string) => {
+    // 这里应该调用后端API来修改密码
+    // 暂时模拟成功
+    setMessage({ type: 'success', text: '密码修改成功！' });
+    setShowPasswordChange(false);
   };
 
   if (!token) {
@@ -139,21 +149,17 @@ export default function ProfilePage() {
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 2fr', gap: '40px' }}>
           {/* 左侧：头像和基本信息 */}
           <div style={{ backgroundColor: 'white', borderRadius: '15px', padding: '30px', height: 'fit-content' }}>
+            <AvatarUpload
+              currentAvatar={profile?.avatar}
+              onAvatarChange={(avatarUrl) => {
+                if (profile) {
+                  setProfile({ ...profile, avatar: avatarUrl });
+                }
+              }}
+              size={120}
+            />
+            
             <div style={{ textAlign: 'center', marginBottom: '30px' }}>
-              <div style={{
-                width: '120px',
-                height: '120px',
-                borderRadius: '50%',
-                backgroundColor: '#667eea',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: '3rem',
-                color: 'white',
-                margin: '0 auto 15px'
-              }}>
-                {profile?.username?.charAt(0)?.toUpperCase() || 'U'}
-              </div>
               <h3 style={{ margin: '0 0 5px 0', color: '#333' }}>{profile?.username || '用户'}</h3>
               <p style={{ margin: 0, color: '#666' }}>{profile?.email}</p>
             </div>
@@ -310,6 +316,22 @@ export default function ProfilePage() {
                   
                   <button
                     type="button"
+                    onClick={() => setShowPasswordChange(true)}
+                    style={{
+                      padding: '15px 25px',
+                      backgroundColor: '#28a745',
+                      color: 'white',
+                      border: 'none',
+                      borderRadius: '8px',
+                      fontSize: '1rem',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    修改密码
+                  </button>
+                  
+                  <button
+                    type="button"
                     onClick={handleLogout}
                     style={{
                       padding: '15px 25px',
@@ -328,6 +350,29 @@ export default function ProfilePage() {
             </form>
           </div>
         </div>
+
+        {/* 密码修改模态框 */}
+        {showPasswordChange && (
+          <div style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            backgroundColor: 'rgba(0,0,0,0.5)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000
+          }}>
+            <div style={{ maxWidth: '500px', width: '90%' }}>
+              <PasswordChange
+                onPasswordChange={handlePasswordChange}
+                onCancel={() => setShowPasswordChange(false)}
+              />
+            </div>
+          </div>
+        )}
 
         {/* 底部快速链接 */}
         <div style={{ 

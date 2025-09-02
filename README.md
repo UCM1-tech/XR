@@ -112,15 +112,11 @@ cd ..
 ### 启动开发服务器
 
 ```bash
-# 启动前端开发服务器 (端口 3000)
-npm run dev
-
-# 启动后端服务器 (端口 3001)
-npm run server:dev
-
-# 或者同时启动两个服务器
-npm run dev & npm run server:dev
+# 一键启动前端 (端口 3000) 与后端 (端口 3001)
+npm run start
 ```
+
+> 该命令借助 [`concurrently`](https://www.npmjs.com/package/concurrently) 在同一终端并行运行两个服务，简化了开发流程。
 
 ### 构建生产版本
 

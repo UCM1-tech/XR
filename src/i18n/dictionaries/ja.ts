@@ -13,6 +13,7 @@ export const messages: Messages = {
     profile: 'プロフィール',
     logout: 'ログアウト',
     language: '言語',
+    followSystem: 'システム設定に従う',
   },
   home: {
     heroTitle: 'XR スマート試着室',

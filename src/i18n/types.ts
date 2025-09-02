@@ -11,6 +11,7 @@ export type Messages = {
     profile: string;
     logout: string;
     language: string;
+    followSystem: string;
   };
   home: {
     heroTitle: string;

@@ -13,6 +13,7 @@ export const messages: Messages = {
     profile: 'Profile',
     logout: 'Logout',
     language: 'Language',
+    followSystem: 'Follow System',
   },
   home: {
     heroTitle: 'XR Smart Fitting Room',

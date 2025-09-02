@@ -13,6 +13,7 @@ export const messages: Messages = {
     profile: '资料',
     logout: '退出',
     language: '语言',
+    followSystem: '跟随系统',
   },
   home: {
     heroTitle: 'XR 智能试衣间',

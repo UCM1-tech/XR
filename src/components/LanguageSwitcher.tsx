@@ -6,6 +6,7 @@ export default function LanguageSwitcher() {
   const { locale, t } = useI18n();
   const [isPending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
+  const [currentPreference, setCurrentPreference] = useState<string>('system');
   const containerRef = useRef<HTMLDivElement | null>(null);
 
   function toggle() {
@@ -23,8 +24,18 @@ export default function LanguageSwitcher() {
     return () => document.removeEventListener('click', onDocClick);
   }, []);
 
-  async function setLocale(nextLocale: 'en' | 'zh-CN' | 'ja') {
-    if (nextLocale === locale) {
+  useEffect(() => {
+    // Check current preference from cookie
+    const cookies = document.cookie.split(';');
+    const localeCookie = cookies.find(c => c.trim().startsWith('locale='));
+    if (localeCookie) {
+      const preference = localeCookie.split('=')[1];
+      setCurrentPreference(preference);
+    }
+  }, []);
+
+  async function setLocale(nextLocale: 'en' | 'zh-CN' | 'ja' | 'fr' | 'es' | 'de' | 'system') {
+    if (nextLocale === currentPreference) {
       setOpen(false);
       return;
     }
@@ -66,13 +77,25 @@ export default function LanguageSwitcher() {
           }}
         >
           <button
+            onClick={() => setLocale('system')}
+            disabled={isPending}
+            style={{
+              width: '100%',
+              textAlign: 'left',
+              padding: '8px 12px',
+              background: currentPreference === 'system' ? '#f7f7f7' : 'white',
+              border: 'none',
+              cursor: 'pointer',
+            }}
+          >{t('nav.followSystem')}</button>
+          <button
             onClick={() => setLocale('zh-CN')}
             disabled={isPending}
             style={{
               width: '100%',
               textAlign: 'left',
               padding: '8px 12px',
-              background: locale === 'zh-CN' ? '#f7f7f7' : 'white',
+              background: currentPreference === 'zh-CN' ? '#f7f7f7' : 'white',
               border: 'none',
               cursor: 'pointer',
             }}
@@ -84,11 +107,47 @@ export default function LanguageSwitcher() {
               width: '100%',
               textAlign: 'left',
               padding: '8px 12px',
-              background: locale === 'en' ? '#f7f7f7' : 'white',
+              background: currentPreference === 'en' ? '#f7f7f7' : 'white',
               border: 'none',
               cursor: 'pointer',
             }}
           >English</button>
+          <button
+            onClick={() => setLocale('de')}
+            disabled={isPending}
+            style={{
+              width: '100%',
+              textAlign: 'left',
+              padding: '8px 12px',
+              background: currentPreference === 'de' ? '#f7f7f7' : 'white',
+              border: 'none',
+              cursor: 'pointer',
+            }}
+          >Deutsch</button>
+          <button
+            onClick={() => setLocale('es')}
+            disabled={isPending}
+            style={{
+              width: '100%',
+              textAlign: 'left',
+              padding: '8px 12px',
+              background: currentPreference === 'es' ? '#f7f7f7' : 'white',
+              border: 'none',
+              cursor: 'pointer',
+            }}
+          >Español</button>
+          <button
+            onClick={() => setLocale('fr')}
+            disabled={isPending}
+            style={{
+              width: '100%',
+              textAlign: 'left',
+              padding: '8px 12px',
+              background: currentPreference === 'fr' ? '#f7f7f7' : 'white',
+              border: 'none',
+              cursor: 'pointer',
+            }}
+          >Français</button>
           <button
             onClick={() => setLocale('ja')}
             disabled={isPending}
@@ -96,7 +155,7 @@ export default function LanguageSwitcher() {
               width: '100%',
               textAlign: 'left',
               padding: '8px 12px',
-              background: locale === 'ja' ? '#f7f7f7' : 'white',
+              background: currentPreference === 'ja' ? '#f7f7f7' : 'white',
               border: 'none',
               cursor: 'pointer',
             }}

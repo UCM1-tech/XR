@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import Image from 'next/image';
 import { getLocaleFromCookies, getMessagesForLocale } from '@/i18n/server';
 
 export default function HomePage() {

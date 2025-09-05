@@ -86,7 +86,7 @@ export default function RegisterPage() {
     try {
       await register(username, email, password);
       // 注册成功后会自动重定向
-    } catch (err) {
+    } catch {
       // 错误已经在 store 中处理
     }
   };

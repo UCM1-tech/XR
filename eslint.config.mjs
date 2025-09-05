@@ -20,6 +20,19 @@ const eslintConfig = [
       "next-env.d.ts",
     ],
   },
+  {
+    files: [
+      "express-server/**/*.js",
+      "express-server/*.js",
+    ],
+    languageOptions: {
+      ecmaVersion: 2022,
+      sourceType: "commonjs",
+    },
+    rules: {
+      "@typescript-eslint/no-require-imports": "off",
+    },
+  },
 ];
 
 export default eslintConfig;

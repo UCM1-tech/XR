@@ -11,13 +11,18 @@ type I18nContextValue = {
 
 const I18nContext = createContext<I18nContextValue | null>(null);
 
-function getMessageByPath(messages: unknown, path: string): string {
+function getMessageByPath(messages: Messages, path: string): string {
   if (!path) return '';
   const segments = path.split('.');
-  let current: any = messages as any;
+  let current: unknown = messages as unknown;
   for (const segment of segments) {
     if (current == null) break;
-    current = current[segment];
+    if (typeof current === 'object' && current !== null && segment in current) {
+      // @ts-expect-error index access over nested message dict
+      current = current[segment];
+    } else {
+      current = undefined;
+    }
   }
   return typeof current === 'string' ? current : path;
 }

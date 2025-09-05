@@ -115,6 +115,7 @@ export default function AvatarUpload({
         onDrop={handleDrop}
       >
         {displayAvatar ? (
+          // eslint-disable-next-line @next/next/no-img-element
           <img
             src={displayAvatar}
             alt="头像"

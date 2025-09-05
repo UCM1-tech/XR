@@ -38,7 +38,7 @@ function createApiClient(): AxiosInstance {
       return response;
     },
     async (error: AxiosError) => {
-      const originalRequest = error.config as any;
+      const originalRequest = error.config as Record<string, unknown>;
 
       // 处理401错误（token过期或无效）
       if (error.response?.status === 401 && !originalRequest._retry) {
@@ -59,7 +59,7 @@ function createApiClient(): AxiosInstance {
             originalRequest.headers.Authorization = `Bearer ${newToken}`;
             return client(originalRequest);
           }
-        } catch (refreshError) {
+        } catch {
           // 刷新失败，清除token并重定向到登录页
           if (typeof window !== 'undefined') {
             window.localStorage.removeItem('auth_token');
@@ -122,15 +122,17 @@ export function isAuthenticated(): boolean {
 }
 
 // 通用API错误处理
-export function handleApiError(error: any): string {
-  if (error.response?.data?.message) {
-    return error.response.data.message;
+export function handleApiError(error: unknown): string {
+  const maybeAxiosError = error as AxiosError<{ message?: string }>;
+  const responseMessage = maybeAxiosError.response?.data?.message;
+  if (typeof responseMessage === 'string' && responseMessage) {
+    return responseMessage;
   }
-  
-  if (error.message) {
-    return error.message;
+
+  if (typeof (error as { message?: unknown }).message === 'string') {
+    return (error as { message?: string }).message as string;
   }
-  
+
   return '请求失败，请稍后重试';
 }
 

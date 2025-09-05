@@ -10,8 +10,9 @@ const userController = {
       }
       
       // 返回用户资料，排除敏感信息
-      const { password, ...userProfile } = user;
-      res.json(userProfile);
+      const userCopy = { ...user };
+      delete userCopy.password;
+      res.json(userCopy);
     } catch (error) {
       console.error('获取用户资料失败:', error);
       res.status(500).json({ message: '服务器错误', error: error.message });
@@ -60,8 +61,9 @@ const userController = {
       user.updatedAt = new Date().toISOString();
       
       // 返回更新后的用户资料（排除敏感信息）
-      const { password, ...userProfile } = user;
-      res.json(userProfile);
+      const userCopy2 = { ...user };
+      delete userCopy2.password;
+      res.json(userCopy2);
     } catch (error) {
       console.error('更新用户资料失败:', error);
       res.status(500).json({ message: '服务器错误', error: error.message });

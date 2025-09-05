@@ -3,7 +3,7 @@ import { useCartStore } from '@/store/cart';
 import Link from 'next/link';
 
 export default function CartPage() {
-  const { items, removeItem, updateQuantity, totalPrice, clearCart } = useCartStore();
+  const { items, removeItem, updateQuantity, totalPrice } = useCartStore();
 
   if (items.length === 0) {
     return (

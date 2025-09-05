@@ -55,7 +55,7 @@ export default function LoginPage() {
     try {
       await login(email, password);
       // 登录成功后会自动重定向
-    } catch (err) {
+    } catch {
       // 错误已经在 store 中处理
     }
   };

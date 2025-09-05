@@ -67,7 +67,7 @@ export default function ProfilePage() {
     }
   };
 
-  const handlePasswordChange = async (currentPassword: string, newPassword: string) => {
+  const handlePasswordChange = async () => {
     // 这里应该调用后端API来修改密码
     // 暂时模拟成功
     setMessage({ type: 'success', text: '密码修改成功！' });

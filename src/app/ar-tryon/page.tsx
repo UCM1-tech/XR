@@ -175,7 +175,7 @@ export default function ARTryOnPage() {
                 ) : (
                   <div style={{ textAlign: 'center' }}>
                     <div style={{ fontSize: '4rem', marginBottom: '20px' }}>📷</div>
-                    <p>点击"启动摄像头"开始试穿体验</p>
+                    <p>点击&ldquo;启动摄像头&rdquo;开始试穿体验</p>
                   </div>
                 )}
               </div>

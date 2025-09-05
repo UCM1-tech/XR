@@ -1,5 +1,5 @@
 import { cookies, headers } from 'next/headers';
-import { defaultLocale, isSupportedLocale, isSupportedPreference, defaultPreference, type Locale, type LocalePreference } from './config';
+import { defaultLocale, isSupportedLocale, isSupportedPreference, defaultPreference, type Locale } from './config';
 import { messages as en } from './dictionaries/en';
 import { messages as zhCN } from './dictionaries/zh-CN';
 import { messages as ja } from './dictionaries/ja';

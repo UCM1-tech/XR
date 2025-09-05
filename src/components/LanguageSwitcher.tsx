@@ -3,7 +3,7 @@ import { useState, useTransition, useRef, useEffect } from 'react';
 import { useI18n } from '@/hooks/useI18n';
 
 export default function LanguageSwitcher() {
-  const { locale, t } = useI18n();
+  const { t } = useI18n();
   const [isPending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
   const [currentPreference, setCurrentPreference] = useState<string>('system');

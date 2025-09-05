@@ -7,7 +7,7 @@ import { useI18n } from '@/hooks/useI18n';
 import LanguageSwitcher from './LanguageSwitcher';
 
 export default function ClientOnlyNavigation() {
-  const { token, logout, isInitialized } = useAuthStore();
+  const { token, logout } = useAuthStore();
   const { totalItems, isHydrated: cartHydrated, setHydrated } = useCartStore();
   const [isHydrated, setIsHydrated] = useState(false);
   const { t } = useI18n();

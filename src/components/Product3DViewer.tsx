@@ -1,7 +1,7 @@
 "use client";
 import { useRef, useState, useEffect } from 'react';
-import { Canvas, useFrame, useThree } from '@react-three/fiber';
-import { OrbitControls, Environment, useGLTF, PresentationControls, Float, Text } from '@react-three/drei';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { OrbitControls, Environment, PresentationControls, Float, Text } from '@react-three/drei';
 import * as THREE from 'three';
 
 interface Product3DViewerProps {
@@ -11,7 +11,7 @@ interface Product3DViewerProps {
 }
 
 // 3D模型组件
-function ProductModel({ productType, productName }: { productType: string; productName: string }) {
+function ProductModel({ productType }: { productType: string }) {
   const meshRef = useRef<THREE.Mesh>(null);
   const [hovered, setHovered] = useState(false);
   const [clicked, setClicked] = useState(false);
@@ -272,7 +272,7 @@ export default function Product3DViewer({ productType, productName, onViewModeCh
         <pointLight position={[-10, -10, -5]} intensity={0.5} />
         
         {/* 产品模型 */}
-        <ProductModel productType={productType} productName={productName} />
+        <ProductModel productType={productType} />
         
         {/* 产品标签 */}
         <ProductLabel productName={productName} />

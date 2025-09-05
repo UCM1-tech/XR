@@ -7,7 +7,8 @@ const getJwtSecret = () => process.env.JWT_SECRET || 'dev_secret_key_change_me';
 
 const sanitizeUser = (user) => {
   if (!user) return null;
-  const { password, ...rest } = user;
+  const rest = { ...user };
+  delete rest.password;
   return rest;
 };
 

@@ -24,7 +24,7 @@ export default function FavoritesPage() {
       <h1>我的收藏 ({items.length})</h1>
       
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '20px' }}>
-        {items.map((product) => (
+        {items.map(({ product }) => (
           <div key={product._id} style={{ 
             border: '1px solid #eee', 
             padding: '1rem', 

@@ -1,5 +1,5 @@
 ---
-description: for this project, chat with me in Chinese, but always remember this project provides multi-language support. So update the relevant language packs when in need
+description: for this project, always remember this project provides multi-language support. So update the relevant language packs when in need
 globs:
 alwaysApply: true
 ---

@@ -1,10 +1,10 @@
 "use client";
-import { useState } from 'react';
+import { useState, type FormEvent } from 'react';
 import Link from 'next/link';
 import { useCartStore } from '@/store/cart';
 
 export default function CheckoutPage() {
-  const { items, removeFromCart, updateQuantity, clearCart } = useCartStore();
+  const { items, removeItem, updateQuantity, clearCart } = useCartStore();
   const [currentStep, setCurrentStep] = useState(1);
   const [shippingInfo, setShippingInfo] = useState({
     name: '',
@@ -16,12 +16,12 @@ export default function CheckoutPage() {
   const [paymentMethod, setPaymentMethod] = useState('alipay');
 
   // 计算总价
-  const subtotal = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const subtotal = items.reduce((sum, item) => sum + (item.product.price || 0) * item.quantity, 0);
   const shipping = subtotal > 500 ? 0 : 20; // 满500免运费
   const total = subtotal + shipping;
 
   // 处理表单提交
-  const handleSubmit = (e) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (currentStep === 1) {
       setCurrentStep(2);
@@ -172,7 +172,7 @@ export default function CheckoutPage() {
                 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
                   {items.map((item) => (
-                    <div key={item._id} style={{
+                    <div key={item.product._id} style={{
                       display: 'flex',
                       alignItems: 'center',
                       gap: '20px',
@@ -190,18 +190,18 @@ export default function CheckoutPage() {
                         justifyContent: 'center',
                         fontSize: '2rem'
                       }}>
-                        {item.category === 'clothing' ? '👕' : '📱'}
+                        {item.product.category === 'clothing' ? '👕' : '📱'}
                       </div>
                       
                       <div style={{ flex: 1 }}>
-                        <h3 style={{ margin: '0 0 5px 0', color: '#333' }}>{item.name}</h3>
-                        <p style={{ margin: 0, color: '#666' }}>{item.description}</p>
+                        <h3 style={{ margin: '0 0 5px 0', color: '#333' }}>{item.product.name}</h3>
+                        <p style={{ margin: 0, color: '#666' }}>{item.product.description}</p>
                       </div>
                       
                       <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                           <button
-                            onClick={() => updateQuantity(item._id, Math.max(1, item.quantity - 1))}
+                            onClick={() => updateQuantity(item.product._id, Math.max(1, item.quantity - 1))}
                             style={{
                               width: '30px',
                               height: '30px',
@@ -215,7 +215,7 @@ export default function CheckoutPage() {
                           </button>
                           <span style={{ minWidth: '30px', textAlign: 'center' }}>{item.quantity}</span>
                           <button
-                            onClick={() => updateQuantity(item._id, item.quantity + 1)}
+                            onClick={() => updateQuantity(item.product._id, item.quantity + 1)}
                             style={{
                               width: '30px',
                               height: '30px',
@@ -230,11 +230,11 @@ export default function CheckoutPage() {
                         </div>
                         
                         <span style={{ fontWeight: 'bold', color: '#667eea', minWidth: '80px' }}>
-                          ¥{item.price * item.quantity}
+                          ¥{(item.product.price || 0) * item.quantity}
                         </span>
                         
                         <button
-                          onClick={() => removeFromCart(item._id)}
+                          onClick={() => removeItem(item.product._id)}
                           style={{
                             padding: '5px 10px',
                             backgroundColor: '#dc3545',
@@ -425,14 +425,14 @@ export default function CheckoutPage() {
             
             <div style={{ marginBottom: '20px' }}>
               {items.map((item) => (
-                <div key={item._id} style={{
+                <div key={item.product._id} style={{
                   display: 'flex',
                   justifyContent: 'space-between',
                   marginBottom: '10px',
                   fontSize: '0.9rem'
                 }}>
-                  <span>{item.name} × {item.quantity}</span>
-                  <span>¥{item.price * item.quantity}</span>
+                  <span>{item.product.name} × {item.quantity}</span>
+                  <span>¥{(item.product.price || 0) * item.quantity}</span>
                 </div>
               ))}
             </div>

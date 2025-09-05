@@ -9,6 +9,7 @@ interface CartItem {
   quantity: number;
   selectedSize?: string;
   selectedColor?: string;
+  selected?: boolean;
   addedAt: string;
 }
 

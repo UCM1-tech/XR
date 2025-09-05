@@ -2,15 +2,17 @@
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
 
+type Product = { id: number; name: string; type: string; emoji: string; price: string };
+
 export default function ARTryOnPage() {
   const [isCameraActive, setIsCameraActive] = useState(false);
-  const [selectedProduct, setSelectedProduct] = useState(null);
-  const [cameraPermission, setCameraPermission] = useState('pending');
-  const videoRef = useRef(null);
-  const canvasRef = useRef(null);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [cameraPermission, setCameraPermission] = useState<'pending' | 'granted' | 'denied'>('pending');
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   // 模拟商品数据
-  const products = [
+  const products: Product[] = [
     { id: 1, name: '时尚T恤', type: 'shirt', emoji: '👕', price: '¥299' },
     { id: 2, name: '休闲牛仔裤', type: 'pants', emoji: '👖', price: '¥399' },
     { id: 3, name: '优雅连衣裙', type: 'dress', emoji: '👗', price: '¥599' },
@@ -42,8 +44,10 @@ export default function ARTryOnPage() {
   // 停止摄像头
   const stopCamera = () => {
     if (videoRef.current && videoRef.current.srcObject) {
-      const tracks = videoRef.current.srcObject.getTracks();
+      const stream = videoRef.current.srcObject as MediaStream;
+      const tracks = stream.getTracks();
       tracks.forEach(track => track.stop());
+      videoRef.current.srcObject = null;
       setIsCameraActive(false);
     }
   };
@@ -54,6 +58,9 @@ export default function ARTryOnPage() {
       const canvas = canvasRef.current;
       const video = videoRef.current;
       const ctx = canvas.getContext('2d');
+      if (!ctx) {
+        return;
+      }
       
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;

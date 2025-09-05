@@ -18,7 +18,8 @@ function parseAcceptLanguage(header: string | undefined | null): string[] {
 }
 
 function resolveFromSystemPreference(): Locale {
-  const header = (headers().get('accept-language') || '');
+  const h = headers() as unknown;
+  const header = ((h as { get?: (name: string) => string | null })?.get?.('accept-language') || '') as string;
   const candidates = parseAcceptLanguage(header);
   for (const candidate of candidates) {
     // Try full match first (e.g., zh-CN)
@@ -33,8 +34,9 @@ function resolveFromSystemPreference(): Locale {
 }
 
 export function getLocaleFromCookies(): Locale {
-  const store = cookies();
-  const rawPref = (store.get('locale')?.value || defaultPreference) as string | undefined;
+  const storeLike = cookies() as unknown;
+  const getFn = (storeLike as { get?: (name: string) => { value?: string } | undefined })?.get;
+  const rawPref = ((typeof getFn === 'function' ? getFn.call(storeLike, 'locale')?.value : undefined) || defaultPreference) as string | undefined;
   if (isSupportedPreference(rawPref) && rawPref !== 'system') {
     return rawPref as Locale;
   }

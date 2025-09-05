@@ -38,7 +38,7 @@ function createApiClient(): AxiosInstance {
       return response;
     },
     async (error: AxiosError) => {
-      const originalRequest = error.config as Record<string, unknown>;
+      const originalRequest = (error.config ?? {}) as unknown as Record<string, unknown>;
 
       // 处理401错误（token过期或无效）
       if (error.response?.status === 401 && !originalRequest._retry) {
@@ -56,8 +56,11 @@ function createApiClient(): AxiosInstance {
             window.localStorage.setItem('auth_token', newToken);
 
             // 重试原始请求
-            originalRequest.headers.Authorization = `Bearer ${newToken}`;
-            return client(originalRequest);
+            (originalRequest as { headers: Record<string, string> }).headers = {
+              ...(originalRequest as { headers?: Record<string, string> }).headers,
+              Authorization: `Bearer ${newToken}`,
+            };
+            return client(originalRequest as never);
           }
         } catch {
           // 刷新失败，清除token并重定向到登录页
@@ -69,10 +72,11 @@ function createApiClient(): AxiosInstance {
       }
 
       // 处理其他错误
-      if (error.response?.status === 403) {
-        console.error('权限不足:', error.response.data);
-      } else if (error.response?.status >= 500) {
-        console.error('服务器错误:', error.response.data);
+      const status = error.response?.status;
+      if (status === 403) {
+        console.error('权限不足:', error.response?.data);
+      } else if (typeof status === 'number' && status >= 500) {
+        console.error('服务器错误:', error.response?.data);
       }
 
       return Promise.reject(error);
